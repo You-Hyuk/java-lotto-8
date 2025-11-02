@@ -11,7 +11,7 @@ public class LottoController {
 
     public void run() {
         Long purchaseAmount = inputParser.parseToLong(inputView.readPurchaseAmount());
-        List<Integer> rawWinningNumbers = inputParser.parseToIntegerList(inputView.readWinningNumbers());
-        String rawBonusNumber = inputView.readBonusNumber();
+        List<Integer> winningNumbers = inputParser.parseToIntegerList(inputView.readWinningNumbers());
+        int bonusNumber = inputParser.parseToInteger(inputView.readBonusNumber());
     }
 }
