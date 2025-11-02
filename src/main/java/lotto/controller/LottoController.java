@@ -9,5 +9,6 @@ public class LottoController {
     public void run() {
         String rawPurchaseAmount = inputView.readPurchaseAmount();
         String rawWinningNumbers = inputView.readWinningNumbers();
+        String rawBonusNumber = inputView.readBonusNumber();
     }
 }
