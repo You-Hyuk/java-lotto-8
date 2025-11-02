@@ -7,6 +7,7 @@ public class LottoController {
     private final InputView inputView = new InputView();
 
     public void run() {
-        String purchaseAmount = inputView.readPurchaseAmount();
+        String rawPurchaseAmount = inputView.readPurchaseAmount();
+        String rawWinningNumbers = inputView.readWinningNumbers();
     }
 }
