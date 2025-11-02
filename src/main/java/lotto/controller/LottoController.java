@@ -1,5 +1,6 @@
 package lotto.controller;
 
+import java.util.List;
 import lotto.service.InputParser;
 import lotto.view.InputView;
 
@@ -10,7 +11,7 @@ public class LottoController {
 
     public void run() {
         Long purchaseAmount = inputParser.parseToLong(inputView.readPurchaseAmount());
-        String rawWinningNumbers = inputView.readWinningNumbers();
+        List<Integer> rawWinningNumbers = inputParser.parseToIntegerList(inputView.readWinningNumbers());
         String rawBonusNumber = inputView.readBonusNumber();
     }
 }
