@@ -15,6 +15,12 @@ public class Lotto {
         this.numbers = numbers;
     }
 
+    public int countMatchNumbers(List<Integer> winningNumbers) {
+        return (int) numbers.stream()
+                .filter(winningNumbers::contains)
+                .count();
+    }
+
     @Override
     public String toString() {
         return numbers.stream()
