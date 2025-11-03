@@ -38,8 +38,8 @@ class LottoTest {
     }
 
     @Test
-    @DisplayName("로또 번호가 5개의 숫자로 구성된 경우 예외가 발생한다.")
-    public void 로또_번호가_5개의_숫자로_구성된_경우_예외가_발생한다() throws Exception {
+    @DisplayName("로또 번호가 6개보다 적은 숫자로 구성된 경우 예외가 발생한다.")
+    public void 로또_번호가_6개보다_적은_숫자로_구성된_경우_예외가_발생한다() throws Exception {
         assertThatThrownBy(() -> new Lotto(List.of(1, 2, 3, 4, 5)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
