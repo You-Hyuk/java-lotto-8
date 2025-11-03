@@ -12,7 +12,7 @@ public class LottoGenerator {
     public Lottos issueLottos(int count) {
         List<Lotto> lottos = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
+        for (int issuedCount = 0; issuedCount < count; issuedCount++) {
             lottos.add(new Lotto(RandomNumberGenerator.generateRandomNumbers(
                     LottoConstants.LOTTO_NUMBER_COUNT.getValue(),
                     LottoConstants.MIN_NUMBER.getValue(),
