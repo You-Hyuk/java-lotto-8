@@ -32,21 +32,29 @@ public class LottoController {
     }
 
     public void run() {
-        long purchaseAmount = getPurchaseAmount();
-        int count = lottoGenerator.calculateLottoCount(purchaseAmount);
-        outputView.printPurchaseCount(count);
-        Lottos lottos = lottoGenerator.issueLottos(count);
-        outputView.printLottoNumbers(lottos);
-        List<Integer> winningNumbers = getWinningNumbers();
-        int bonusNumber = getBonusNumber();
-        Map<LottoRank, Integer> lottoRankMap =
-                lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
+        long purchaseAmount = readPurchaseAmount();
+        Lottos lottos = issueLottos(purchaseAmount);
+        List<Integer> winningNumbers = readWinningNumbers();
+        int bonusNumber = readBonusNumber();
+        Map<LottoRank, Integer> lottoRankMap = lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
         outputView.printLottoResult(lottoRankMap);
+        printProfitRate(purchaseAmount, lottoRankMap);
+    }
+
+    private void printProfitRate(long purchaseAmount, Map<LottoRank, Integer> lottoRankMap) {
         double profitRate = lottoGameService.calculateProfitRate(purchaseAmount, lottoRankMap);
         outputView.printProfitRate(profitRate);
     }
 
-    private long getPurchaseAmount() {
+    private Lottos issueLottos(long purchaseAmount) {
+        int count = lottoGenerator.calculateLottoCount(purchaseAmount);
+        outputView.printPurchaseCount(count);
+        Lottos lottos = lottoGenerator.issueLottos(count);
+        outputView.printLottoNumbers(lottos);
+        return lottos;
+    }
+
+    private long readPurchaseAmount() {
         boolean isFirst = true;
 
         while (true) {
@@ -62,7 +70,7 @@ public class LottoController {
         }
     }
 
-    private List<Integer> getWinningNumbers() {
+    private List<Integer> readWinningNumbers() {
         boolean isFirst = true;
 
         while (true) {
@@ -79,7 +87,7 @@ public class LottoController {
         }
     }
 
-    private int getBonusNumber() {
+    private int readBonusNumber() {
         boolean isFirst = true;
 
         while (true) {
