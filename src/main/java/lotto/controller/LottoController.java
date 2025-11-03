@@ -1,8 +1,11 @@
 package lotto.controller;
 
 import java.util.List;
+import java.util.Map;
 import lotto.domain.Lottos;
+import lotto.enums.LottoRank;
 import lotto.service.InputParser;
+import lotto.service.LottoGameService;
 import lotto.service.LottoGenerator;
 import lotto.validation.InputValidator;
 import lotto.view.InputView;
@@ -15,6 +18,7 @@ public class LottoController {
     private final InputParser inputParser = new InputParser();
     private final InputValidator inputValidator = new InputValidator();
     private final LottoGenerator lottoGenerator = new LottoGenerator();
+    private final LottoGameService lottoGameService = new LottoGameService();
 
     public void run() {
         long purchaseAmount = getPurchaseAmount();
@@ -24,6 +28,9 @@ public class LottoController {
         outputView.printLottoNumbers(lottos);
         List<Integer> winningNumbers = getWinningNumbers();
         int bonusNumber = getBonusNumber();
+        Map<LottoRank, Integer> lottoRankMap =
+                lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
+        outputView.printLottoResult(lottoRankMap);
     }
 
     private long getPurchaseAmount() {
