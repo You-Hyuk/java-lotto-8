@@ -27,6 +27,10 @@ public class InputValidator {
         winningNumbers.forEach(this::validateNumberRange);
     }
 
+    public void validateBonusNumber(int bonusNumber) {
+        validateNumberRange(bonusNumber);
+    }
+
     private void validateDuplicateNumber(List<Integer> winningNumbers) {
         long distinctCount = winningNumbers.stream()
                 .distinct()
