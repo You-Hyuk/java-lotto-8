@@ -3,13 +3,17 @@ package lotto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Map;
 import lotto.domain.Lotto;
+import lotto.domain.Lottos;
+import lotto.enums.LottoRank;
+import lotto.service.LottoGameService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
-public class LottoServiceTest {
+public class LottoGameServiceTest {
 
-    private final LottoService lottoService = new LottoService();
+    private final LottoGameService lottoGameService = new LottoGameService();
 
     @Test
     @DisplayName("로또 번호와 당첨 번호가 1개 일치하는 경우 당첨되지 않는다.")
@@ -17,14 +21,15 @@ public class LottoServiceTest {
         //given
         List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
         Lotto lotto = new Lotto(List.of(1, 7, 8, 9, 10, 11));
+        Lottos lottos = new Lottos(List.of(lotto));
         int bonusNumber = 12;
 
         //when
-        int matchCount = lotto.countMatchedCount(winningNumbers);
-        
+        Map<LottoRank, Integer> lottoRankMap = lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
+
         //then
-        assertThat(lottoService.getRank(matchCount, bonusNumber))
-                .isEqualTo(LottoRank.NONE);
+        assertThat(lottoRankMap.get(LottoRank.NONE))
+                .isEqualTo(1);
     }
 
     @Test
@@ -33,14 +38,15 @@ public class LottoServiceTest {
         //given
         List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
         Lotto lotto = new Lotto(List.of(1, 2, 8, 9, 10, 11));
+        Lottos lottos = new Lottos(List.of(lotto));
         int bonusNumber = 12;
 
         //when
-        int matchCount = lotto.countMatchedCount(winningNumbers);
+        Map<LottoRank, Integer> lottoRankMap = lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
 
         //then
-        assertThat(lottoService.getRank(matchCount, bonusNumber))
-                .isEqualTo(LottoRank.NONE);
+        assertThat(lottoRankMap.get(LottoRank.NONE))
+                .isEqualTo(1);
     }
 
     @Test
@@ -49,14 +55,15 @@ public class LottoServiceTest {
         //given
         List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
         Lotto lotto = new Lotto(List.of(1, 2, 3, 9, 10, 11));
+        Lottos lottos = new Lottos(List.of(lotto));
         int bonusNumber = 12;
 
         //when
-        int matchCount = lotto.countMatchedCount(winningNumbers);
+        Map<LottoRank, Integer> lottoRankMap = lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
 
         //then
-        assertThat(lottoService.getRank(matchCount, bonusNumber))
-                .isEqualTo(LottoRank.FIFTH);
+        assertThat(lottoRankMap.get(LottoRank.FIFTH))
+                .isEqualTo(1);
     }
 
     @Test
@@ -65,14 +72,15 @@ public class LottoServiceTest {
         //given
         List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
         Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 10, 11));
+        Lottos lottos = new Lottos(List.of(lotto));
         int bonusNumber = 12;
 
         //when
-        int matchCount = lotto.countMatchedCount(winningNumbers);
+        Map<LottoRank, Integer> lottoRankMap = lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
 
         //then
-        assertThat(lottoService.getRank(matchCount, bonusNumber))
-                .isEqualTo(LottoRank.FOURTH);
+        assertThat(lottoRankMap.get(LottoRank.FOURTH))
+                .isEqualTo(1);
     }
 
     @Test
@@ -82,14 +90,15 @@ public class LottoServiceTest {
         //given
         List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
         Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 11));
+        Lottos lottos = new Lottos(List.of(lotto));
         int bonusNumber = 12;
 
         //when
-        int matchCount = lotto.countMatchedCount(winningNumbers);
+        Map<LottoRank, Integer> lottoRankMap = lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
 
         //then
-        assertThat(lottoService.getRank(matchCount, bonusNumber))
-                .isEqualTo(LottoRank.THIRD);
+        assertThat(lottoRankMap.get(LottoRank.THIRD))
+                .isEqualTo(1);
     }
 
     @Test
@@ -98,14 +107,15 @@ public class LottoServiceTest {
         //given
         List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
         Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 11));
-        int bonusNumber = 6;
+        Lottos lottos = new Lottos(List.of(lotto));
+        int bonusNumber = 11;
 
         //when
-        int matchCount = lotto.countMatchedCount(winningNumbers);
+        Map<LottoRank, Integer> lottoRankMap = lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
 
         //then
-        assertThat(lottoService.getRank(matchCount, bonusNumber))
-                .isEqualTo(LottoRank.SECOND);
+        assertThat(lottoRankMap.get(LottoRank.SECOND))
+                .isEqualTo(1);
     }
 
     @Test
@@ -114,14 +124,15 @@ public class LottoServiceTest {
         //given
         List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
         Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+        Lottos lottos = new Lottos(List.of(lotto));
         int bonusNumber = 12;
 
         //when
-        int matchCount = lotto.countMatchedCount(winningNumbers);
+        Map<LottoRank, Integer> lottoRankMap = lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
 
         //then
-        assertThat(lottoService.getRank(matchCount, bonusNumber))
-                .isEqualTo(LottoRank.FIRST);
+        assertThat(lottoRankMap.get(LottoRank.FIRST))
+                .isEqualTo(1);
     }
 
     @Test
@@ -129,9 +140,16 @@ public class LottoServiceTest {
     public void 총_수익률을_계산한다() throws Exception {
         //given
         int purchaseAmount = 1000;
+        List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
+        Lotto lotto = new Lotto(List.of(1, 2, 3, 7, 8, 9));
+        Lottos lottos = new Lottos(List.of(lotto));
+        int bonusNumber = 12;
 
-        //when && then
-        assertThat(lottoService.calcalateProfitRate(purchaseAmount, LottoRank.FIFTH))
+        //when
+        Map<LottoRank, Integer> lottoRankMap = lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
+
+        //then
+        assertThat(lottoGameService.calculateProfitRate(purchaseAmount, lottoRankMap))
                 .isEqualTo(500.0);
     }
 
