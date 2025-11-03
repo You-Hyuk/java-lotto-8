@@ -3,18 +3,22 @@ package lotto;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import java.util.List;
+import lotto.service.InputParser;
+import lotto.validation.InputValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class InputTest {
 
     private final InputValidator inputValidator = new InputValidator();
+    private final InputParser inputParser = new InputParser();
 
     @Test
     @DisplayName("구입 금액 입력이 1000원 단위로 나누어 떨어지는 숫자인 경우 성공한다.")
     public void 구입_금액_입력이_1000원_단위로_나누어_떨어지는_숫자인_경우_성공한다() throws Exception {
         //given
-        String purchaseAmount = "10000";
+        long purchaseAmount = 10000;
 
         //when && //then
         assertDoesNotThrow(() ->{
@@ -26,10 +30,12 @@ public class InputTest {
     @DisplayName("당첨 번호 입력이 쉼표(,)로 구분된 1 ~ 45 사이의 6개의 숫자인 경우 성공한다.")
     public void 당첨_번호_입력이_쉼표로_구분된_1부터_45_사이의_6개의_숫자인_경우_성공한다() throws Exception {
         //given
-        String winningNumbers = "1,2,3,4,5,6";
+        String rawWinningNumbers = "1,2,3,4,5,6";
         
         //when && then
         assertDoesNotThrow(() -> {
+            inputValidator.validateRawWinningNumbers(rawWinningNumbers);
+            List<Integer> winningNumbers = inputParser.parseToIntegerList(rawWinningNumbers);
             inputValidator.validateWinningNumbers(winningNumbers);
         });
     }
@@ -38,7 +44,7 @@ public class InputTest {
     @DisplayName("보너스 번호 입력이 숫자이며 1 ~ 45 사이의 숫자인 경우 성공한다.")
     public void 보너스_번호_입력이_숫자이며_1부터_45_사이의_숫자인_경우_성공한다() throws Exception {
         //given
-        String bonusNumber = "1";
+        int bonusNumber = 1;
         
         //when && then
         assertDoesNotThrow(() -> {
@@ -50,10 +56,10 @@ public class InputTest {
     @DisplayName("구입 금액 입력이 숫자가 아닌 경우 예외가 발생한다.")
     public void 구입_금액_입력이_숫자가_아닌_경우_예외가_발생한다() throws Exception {
         //given
-        String purchaseAmount = "금액";
+        String rawPurchaseAmount = "금액";
         
         //when && then
-        assertThatThrownBy(() -> inputValidator.validatePurchaseAmount(purchaseAmount))
+        assertThatThrownBy(() -> inputParser.parseToLong(rawPurchaseAmount))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -61,7 +67,7 @@ public class InputTest {
     @DisplayName("구입 금액 입력이 1000원 단위로 나누어 떨어지지 않는 경우 예외가 발생한다.")
     public void 구입_금액_입력이_1000원_단위로_나누어_떨어지지_않는_경우_예외가_발생한다() throws Exception {
         //given
-        String purchaseAmount = "12345";
+        long purchaseAmount = 12345;
 
         //when && then
         assertThatThrownBy(() -> inputValidator.validatePurchaseAmount(purchaseAmount))
@@ -72,10 +78,10 @@ public class InputTest {
     @DisplayName("당첨 번호 입력 중 번호가 숫자가 아닌 경우 예외가 발생한다.")
     public void 당첨_번호_입력_중_번호가_숫자가_아닌_경우_예외가_발생한다() throws Exception {
         //given
-        String winningNumbers = "가,나,다,라,마,바";
+        String rawWinningNumbers = "가,나,다,라,마,바";
 
         //when && then
-        assertThatThrownBy(() -> inputValidator.validateWinningNumbers(winningNumbers))
+        assertThatThrownBy(() -> inputParser.parseToInteger(rawWinningNumbers))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -83,7 +89,7 @@ public class InputTest {
     @DisplayName("당첨 번호 입력 중 번호가 1 ~ 45 사이의 숫자가 아닌 경우 예외가 발생한다.")
     public void 당첨_번호_입력_중_번호가_1부터_45_사이의_숫자가_아닌_경우_예외가_발생한다() throws Exception {
         //given
-        String winningNumbers = "1,2,3,4,5,46";
+        List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 46);
 
         //when && then
         assertThatThrownBy(() -> inputValidator.validateWinningNumbers(winningNumbers))
@@ -94,7 +100,7 @@ public class InputTest {
     @DisplayName("당첨 번호 입력 중 번호가 6개가 아닌 경우 예외가 발생한다.")
     public void 당첨_번호_입력_중_번호가_6개가_아닌_경우_예외가_발생한다() throws Exception {
         //given
-        String winningNumbers = "1,2,3,4,5,6,7";
+        List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6, 7);
 
         //when && then
         assertThatThrownBy(() -> inputValidator.validateWinningNumbers(winningNumbers))
@@ -105,20 +111,20 @@ public class InputTest {
     @DisplayName("당첨 번호 입력이 쉼표(,)를 기준으로 구분되지 않는 경우 예외가 발생한다.")
     public void 당첨_번호_입력이_쉼표를_기준으로_구분되지_않는_경우_예외가_발생한다() throws Exception {
         //given
-        String winningNumbers = "1:2:3:4:5:6";
+        String rawWinningNumbers = "1:2:3:4:5:6";
 
         //when && then
-        assertThatThrownBy(() -> inputValidator.validateWinningNumbers(winningNumbers))
+        assertThatThrownBy(() -> inputParser.parseToIntegerList(rawWinningNumbers))
                 .isInstanceOf(IllegalArgumentException.class);
     }
     @Test
     @DisplayName("당첨 번호 입력이 쉼표(,)로 끝나는 경우 예외가 발생한다.")
     public void 당첨_번호_입력이_쉼표로_끝나는_경우_예외가_발생한다() throws Exception {
         //given
-        String winningNumbers = "1,2,3,4,5,6,";
+        String rawWinningNumbers = "1,2,3,4,5,6,";
 
         //when && then
-        assertThatThrownBy(() -> inputValidator.validateWinningNumbers(winningNumbers))
+        assertThatThrownBy(() -> inputValidator.validateRawWinningNumbers(rawWinningNumbers))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -126,7 +132,7 @@ public class InputTest {
     @DisplayName("당첨 번호 입력 중 숫자들이 중복되는 경우 예외가 발생한다.")
     public void 당첨_번호_입력_중_숫자들이_중복되는_경우_예외가_발생한다() throws Exception {
         //given
-        String winningNumbers = "1,2,3,4,5,5";
+        List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 5);
 
         //when && then
         assertThatThrownBy(() -> inputValidator.validateWinningNumbers(winningNumbers))
@@ -137,10 +143,10 @@ public class InputTest {
     @DisplayName("보너스 번호 입력이 숫자가 아닌 경우 예외가 발생한다.")
     public void 보너스_번호_입력이_숫자가_아닌_경우_예외가_발생한다() throws Exception {
         //given
-        String bonusNumber = "보너스";
+        String rawBonusNumber = "보너스";
 
         //when && then
-        assertThatThrownBy(() -> inputValidator.validateBonusNumber(bonusNumber))
+        assertThatThrownBy(() -> inputParser.parseToInteger(rawBonusNumber))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -148,7 +154,7 @@ public class InputTest {
     @DisplayName("보너스 번호 입력이 1 ~ 45 사이의 숫자가 아닌 경우 예외가 발생한다.")
     public void 보너스_번호_입력이_1부터_45_사이의_숫자가_아닌_경우_예외가_발생한다() throws Exception {
         //given
-        String bonusNumber = "0";
+        int bonusNumber = 0;
 
         //when && then
         assertThatThrownBy(() -> inputValidator.validateBonusNumber(bonusNumber))
