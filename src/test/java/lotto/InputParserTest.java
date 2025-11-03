@@ -2,13 +2,11 @@ package lotto;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import lotto.service.InputParser;
+import lotto.util.InputParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class InputParserTest {
-
-    private final InputParser inputParser = new InputParser();
 
     @Test
     @DisplayName("구입 금액 입력이 숫자가 아닌 경우 예외가 발생한다.")
@@ -17,7 +15,7 @@ public class InputParserTest {
         String rawPurchaseAmount = "금액";
 
         //when && then
-        assertThatThrownBy(() -> inputParser.parseToLong(rawPurchaseAmount))
+        assertThatThrownBy(() -> InputParser.parseToLong(rawPurchaseAmount))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -28,7 +26,7 @@ public class InputParserTest {
         String rawWinningNumbers = "가,나,다,라,마,바";
 
         //when && then
-        assertThatThrownBy(() -> inputParser.parseToInteger(rawWinningNumbers))
+        assertThatThrownBy(() -> InputParser.parseToInteger(rawWinningNumbers))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -39,7 +37,7 @@ public class InputParserTest {
         String rawBonusNumber = "보너스";
 
         //when && then
-        assertThatThrownBy(() -> inputParser.parseToInteger(rawBonusNumber))
+        assertThatThrownBy(() -> InputParser.parseToInteger(rawBonusNumber))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

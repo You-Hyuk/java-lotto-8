@@ -4,21 +4,32 @@ import java.util.List;
 import java.util.Map;
 import lotto.domain.Lottos;
 import lotto.enums.LottoRank;
-import lotto.service.InputParser;
+import lotto.util.InputParser;
 import lotto.service.LottoGameService;
 import lotto.service.LottoGenerator;
-import lotto.validation.InputValidator;
+import lotto.util.InputValidator;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
 public class LottoController {
 
-    private final InputView inputView = new InputView();
-    private final OutputView outputView = new OutputView();
-    private final InputParser inputParser = new InputParser();
-    private final InputValidator inputValidator = new InputValidator();
-    private final LottoGenerator lottoGenerator = new LottoGenerator();
-    private final LottoGameService lottoGameService = new LottoGameService();
+    private final InputView inputView;
+    private final OutputView outputView;
+    private final LottoGenerator lottoGenerator;
+    private final LottoGameService lottoGameService;
+
+    public LottoController(
+            InputView inputView,
+            OutputView outputView,
+            LottoGenerator lottoGenerator,
+            LottoGameService lottoGameService
+    )
+    {
+        this.inputView = inputView;
+        this.outputView = outputView;
+        this.lottoGenerator = lottoGenerator;
+        this.lottoGameService = lottoGameService;
+    }
 
     public void run() {
         long purchaseAmount = getPurchaseAmount();
@@ -41,8 +52,8 @@ public class LottoController {
         while (true) {
             try {
                 String rawPurchaseAmount = inputView.readPurchaseAmount(isFirst);
-                long purchaseAmount = inputParser.parseToLong(rawPurchaseAmount);
-                inputValidator.validatePurchaseAmount(purchaseAmount);
+                long purchaseAmount = InputParser.parseToLong(rawPurchaseAmount);
+                InputValidator.validatePurchaseAmount(purchaseAmount);
                 return purchaseAmount;
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
@@ -57,9 +68,9 @@ public class LottoController {
         while (true) {
             try {
                 String rawWinningNumbers = inputView.readWinningNumbers(isFirst);
-                inputValidator.validateRawWinningNumbers(rawWinningNumbers);
-                List<Integer> winningNumbers = inputParser.parseToIntegerList(rawWinningNumbers);
-                inputValidator.validateWinningNumbers(winningNumbers);
+                InputValidator.validateRawWinningNumbers(rawWinningNumbers);
+                List<Integer> winningNumbers = InputParser.parseToIntegerList(rawWinningNumbers);
+                InputValidator.validateWinningNumbers(winningNumbers);
                 return winningNumbers;
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
@@ -74,8 +85,8 @@ public class LottoController {
         while (true) {
             try {
                 String rawBonusNumber = inputView.readBonusNumber(isFirst);
-                int bonusNumber = inputParser.parseToInteger(rawBonusNumber);
-                inputValidator.validateBonusNumber(bonusNumber);
+                int bonusNumber = InputParser.parseToInteger(rawBonusNumber);
+                InputValidator.validateBonusNumber(bonusNumber);
                 return bonusNumber;
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());

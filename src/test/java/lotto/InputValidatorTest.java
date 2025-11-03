@@ -4,15 +4,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.util.List;
-import lotto.service.InputParser;
-import lotto.validation.InputValidator;
+import lotto.util.InputParser;
+import lotto.util.InputValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class InputValidatorTest {
-
-    private final InputValidator inputValidator = new InputValidator();
-    private final InputParser inputParser = new InputParser();
 
     @Test
     @DisplayName("구입 금액 입력이 1000원 단위로 나누어 떨어지는 숫자인 경우 성공한다.")
@@ -22,7 +19,7 @@ public class InputValidatorTest {
 
         //when && //then
         assertDoesNotThrow(() ->{
-            inputValidator.validatePurchaseAmount(purchaseAmount);
+            InputValidator.validatePurchaseAmount(purchaseAmount);
         });
     }
     
@@ -34,9 +31,9 @@ public class InputValidatorTest {
         
         //when && then
         assertDoesNotThrow(() -> {
-            inputValidator.validateRawWinningNumbers(rawWinningNumbers);
-            List<Integer> winningNumbers = inputParser.parseToIntegerList(rawWinningNumbers);
-            inputValidator.validateWinningNumbers(winningNumbers);
+            InputValidator.validateRawWinningNumbers(rawWinningNumbers);
+            List<Integer> winningNumbers = InputParser.parseToIntegerList(rawWinningNumbers);
+            InputValidator.validateWinningNumbers(winningNumbers);
         });
     }
     
@@ -48,7 +45,7 @@ public class InputValidatorTest {
         
         //when && then
         assertDoesNotThrow(() -> {
-            inputValidator.validateBonusNumber(bonusNumber);
+            InputValidator.validateBonusNumber(bonusNumber);
         });
     }
 
@@ -59,7 +56,7 @@ public class InputValidatorTest {
         long purchaseAmount = 12345;
 
         //when && then
-        assertThatThrownBy(() -> inputValidator.validatePurchaseAmount(purchaseAmount))
+        assertThatThrownBy(() -> InputValidator.validatePurchaseAmount(purchaseAmount))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -70,7 +67,7 @@ public class InputValidatorTest {
         List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 46);
 
         //when && then
-        assertThatThrownBy(() -> inputValidator.validateWinningNumbers(winningNumbers))
+        assertThatThrownBy(() -> InputValidator.validateWinningNumbers(winningNumbers))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -81,7 +78,7 @@ public class InputValidatorTest {
         List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6, 7);
 
         //when && then
-        assertThatThrownBy(() -> inputValidator.validateWinningNumbers(winningNumbers))
+        assertThatThrownBy(() -> InputValidator.validateWinningNumbers(winningNumbers))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -93,8 +90,8 @@ public class InputValidatorTest {
 
         //when && then
         assertThatThrownBy(() -> {
-            List<Integer> winningNumbers = inputParser.parseToIntegerList(rawWinningNumbers);
-            inputValidator.validateWinningNumbers(winningNumbers);
+            List<Integer> winningNumbers = InputParser.parseToIntegerList(rawWinningNumbers);
+            InputValidator.validateWinningNumbers(winningNumbers);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -105,7 +102,7 @@ public class InputValidatorTest {
         String rawWinningNumbers = "1,2,3,4,5,6,";
 
         //when && then
-        assertThatThrownBy(() -> inputValidator.validateRawWinningNumbers(rawWinningNumbers))
+        assertThatThrownBy(() -> InputValidator.validateRawWinningNumbers(rawWinningNumbers))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -116,7 +113,7 @@ public class InputValidatorTest {
         List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 5);
 
         //when && then
-        assertThatThrownBy(() -> inputValidator.validateWinningNumbers(winningNumbers))
+        assertThatThrownBy(() -> InputValidator.validateWinningNumbers(winningNumbers))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -128,7 +125,7 @@ public class InputValidatorTest {
         int bonusNumber = 0;
 
         //when && then
-        assertThatThrownBy(() -> inputValidator.validateBonusNumber(bonusNumber))
+        assertThatThrownBy(() -> InputValidator.validateBonusNumber(bonusNumber))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

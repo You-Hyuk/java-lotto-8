@@ -5,16 +5,15 @@ import java.util.List;
 import lotto.domain.Lotto;
 import lotto.domain.Lottos;
 import lotto.enums.LottoConstants;
+import lotto.util.RandomNumberGenerator;
 
 public class LottoGenerator {
-
-    private final RandomNumberGenerator randomNumberGenerator = new RandomNumberGenerator();
 
     public Lottos issueLottos(int count) {
         List<Lotto> lottos = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            lottos.add(new Lotto(randomNumberGenerator.generateRandomNumbers(
+            lottos.add(new Lotto(RandomNumberGenerator.generateRandomNumbers(
                     LottoConstants.LOTTO_NUMBER_COUNT.getValue(),
                     LottoConstants.MIN_NUMBER.getValue(),
                     LottoConstants.MAX_NUMBER.getValue()

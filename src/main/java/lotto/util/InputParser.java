@@ -1,13 +1,15 @@
-package lotto.service;
+package lotto.util;
 
 import java.util.Arrays;
 import java.util.List;
 import lotto.enums.Delimiter;
 import lotto.enums.ErrorMessage;
 
-public class InputParser {
+public final class InputParser {
 
-    public long parseToLong(String input) {
+    private InputParser() {}
+
+    public static long parseToLong(String input) {
         try {
             return Long.parseLong(input);
         } catch (NumberFormatException exception) {
@@ -15,7 +17,7 @@ public class InputParser {
         }
     }
 
-    public List<Integer> parseToIntegerList(String input) {
+    public static List<Integer> parseToIntegerList(String input) {
         try {
             return Arrays.stream(input.split(Delimiter.NUMBERS_DELIMITER.getDelimiter()))
                     .map(Integer::parseInt)
@@ -25,7 +27,7 @@ public class InputParser {
         }
     }
 
-    public int parseToInteger(String input) {
+    public static int parseToInteger(String input) {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException exception) {
