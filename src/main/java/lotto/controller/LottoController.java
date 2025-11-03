@@ -1,18 +1,27 @@
 package lotto.controller;
 
 import java.util.List;
+import lotto.domain.Lottos;
 import lotto.service.InputParser;
+import lotto.service.LottoGenerator;
 import lotto.validation.InputValidator;
 import lotto.view.InputView;
+import lotto.view.OutputView;
 
 public class LottoController {
 
     private final InputView inputView = new InputView();
+    private final OutputView outputView = new OutputView();
     private final InputParser inputParser = new InputParser();
     private final InputValidator inputValidator = new InputValidator();
+    private final LottoGenerator lottoGenerator = new LottoGenerator();
 
     public void run() {
         long purchaseAmount = getPurchaseAmount();
+        int count = lottoGenerator.calculateLottoCount(purchaseAmount);
+        outputView.printPurchaseCount(count);
+        Lottos lottos = lottoGenerator.issueLottos(count);
+        outputView.printLottoNumbers(lottos);
         List<Integer> winningNumbers = getWinningNumbers();
         int bonusNumber = getBonusNumber();
     }
