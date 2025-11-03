@@ -17,7 +17,7 @@ public class InputParser {
 
     public List<Integer> parseToIntegerList(String input) {
         try {
-            return Arrays.stream(input.split(Delimiter.WINNING_NUMBERS_DELIMITER.getDelimiter()))
+            return Arrays.stream(input.split(Delimiter.NUMBERS_DELIMITER.getDelimiter()))
                     .map(Integer::parseInt)
                     .toList();
         } catch (NumberFormatException exception) {

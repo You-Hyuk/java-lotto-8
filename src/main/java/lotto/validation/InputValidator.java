@@ -16,7 +16,7 @@ public class InputValidator {
     }
 
     public void validateRawWinningNumbers(String rawWinningNumbers) {
-        if (rawWinningNumbers.endsWith(Delimiter.WINNING_NUMBERS_DELIMITER.getDelimiter())) {
+        if (rawWinningNumbers.endsWith(Delimiter.NUMBERS_DELIMITER.getDelimiter())) {
             throw new IllegalArgumentException(ErrorMessage.WINNING_NUMBERS_ENDS_WITH_DELIMITER.getMessage());
         }
     }

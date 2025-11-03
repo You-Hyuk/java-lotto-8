@@ -1,7 +1,7 @@
 package lotto.enums;
 
 public enum Delimiter {
-    WINNING_NUMBERS_DELIMITER(",");
+    NUMBERS_DELIMITER(",");
 
     private final String delimiter;
 
