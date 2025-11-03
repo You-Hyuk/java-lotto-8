@@ -5,20 +5,29 @@ import lotto.enums.InputPrompt;
 
 public class InputView {
 
-    public String readPurchaseAmount() {
-        System.out.println(InputPrompt.PURCHASE_AMOUNT.getMessage());
+    public String readPurchaseAmount(boolean showPrompt) {
+        if (showPrompt) {
+            System.out.println(InputPrompt.PURCHASE_AMOUNT.getMessage());
+        }
+
         return Console.readLine();
     }
 
-    public String readWinningNumbers() {
-        System.out.println();
-        System.out.println(InputPrompt.WINNING_NUMBERS.getMessage());
+    public String readWinningNumbers(boolean showPrompt) {
+        if (showPrompt) {
+            System.out.println();
+            System.out.println(InputPrompt.WINNING_NUMBERS.getMessage());
+        }
+
         return Console.readLine();
     }
 
-    public String readBonusNumber() {
-        System.out.println();
-        System.out.println(InputPrompt.BONUS_NUMBERS.getMessage());
+    public String readBonusNumber(boolean showPrompt) {
+        if (showPrompt) {
+            System.out.println();
+            System.out.println(InputPrompt.BONUS_NUMBERS.getMessage());
+        }
+
         return Console.readLine();
     }
 }
