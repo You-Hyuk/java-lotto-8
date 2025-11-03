@@ -9,7 +9,7 @@ import lotto.validation.InputValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class InputTest {
+public class InputValidatorTest {
 
     private final InputValidator inputValidator = new InputValidator();
     private final InputParser inputParser = new InputParser();
@@ -51,17 +51,6 @@ public class InputTest {
             inputValidator.validateBonusNumber(bonusNumber);
         });
     }
-    
-    @Test
-    @DisplayName("구입 금액 입력이 숫자가 아닌 경우 예외가 발생한다.")
-    public void 구입_금액_입력이_숫자가_아닌_경우_예외가_발생한다() throws Exception {
-        //given
-        String rawPurchaseAmount = "금액";
-        
-        //when && then
-        assertThatThrownBy(() -> inputParser.parseToLong(rawPurchaseAmount))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
 
     @Test
     @DisplayName("구입 금액 입력이 1000원 단위로 나누어 떨어지지 않는 경우 예외가 발생한다.")
@@ -71,17 +60,6 @@ public class InputTest {
 
         //when && then
         assertThatThrownBy(() -> inputValidator.validatePurchaseAmount(purchaseAmount))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    @DisplayName("당첨 번호 입력 중 번호가 숫자가 아닌 경우 예외가 발생한다.")
-    public void 당첨_번호_입력_중_번호가_숫자가_아닌_경우_예외가_발생한다() throws Exception {
-        //given
-        String rawWinningNumbers = "가,나,다,라,마,바";
-
-        //when && then
-        assertThatThrownBy(() -> inputParser.parseToInteger(rawWinningNumbers))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -114,9 +92,12 @@ public class InputTest {
         String rawWinningNumbers = "1:2:3:4:5:6";
 
         //when && then
-        assertThatThrownBy(() -> inputParser.parseToIntegerList(rawWinningNumbers))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> {
+            List<Integer> winningNumbers = inputParser.parseToIntegerList(rawWinningNumbers);
+            inputValidator.validateWinningNumbers(winningNumbers);
+        }).isInstanceOf(IllegalArgumentException.class);
     }
+
     @Test
     @DisplayName("당첨 번호 입력이 쉼표(,)로 끝나는 경우 예외가 발생한다.")
     public void 당첨_번호_입력이_쉼표로_끝나는_경우_예외가_발생한다() throws Exception {
@@ -139,16 +120,6 @@ public class InputTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Test
-    @DisplayName("보너스 번호 입력이 숫자가 아닌 경우 예외가 발생한다.")
-    public void 보너스_번호_입력이_숫자가_아닌_경우_예외가_발생한다() throws Exception {
-        //given
-        String rawBonusNumber = "보너스";
-
-        //when && then
-        assertThatThrownBy(() -> inputParser.parseToInteger(rawBonusNumber))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
 
     @Test
     @DisplayName("보너스 번호 입력이 1 ~ 45 사이의 숫자가 아닌 경우 예외가 발생한다.")
