@@ -1,6 +1,9 @@
 package lotto.domain;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import lotto.enums.Delimiter;
 import lotto.enums.ErrorMessage;
 import lotto.enums.LottoConstants;
 
@@ -10,6 +13,14 @@ public class Lotto {
     public Lotto(List<Integer> numbers) {
         validate(numbers);
         this.numbers = numbers;
+    }
+
+    @Override
+    public String toString() {
+        return numbers.stream()
+                .sorted(Comparator.naturalOrder())
+                .map(String::valueOf)
+                .collect(Collectors.joining(Delimiter.NUMBERS_DELIMITER.getDelimiter() + " ", "[", "]"));
     }
 
     private void validate(List<Integer> numbers) {
@@ -23,7 +34,6 @@ public class Lotto {
         }
     }
 
-    // TODO: 추가 기능 구현
     private void validateDuplicateNumber(List<Integer> numbers) {
         long distinctCount = numbers.stream()
                 .distinct()
