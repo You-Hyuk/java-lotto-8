@@ -1,5 +1,7 @@
 package lotto.view;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
@@ -26,7 +28,8 @@ public class OutputView {
     }
 
     public void printProfitRate(double profitRate) {
-        System.out.printf(OutputPrompt.PROFIT_RATE.getMessage(), profitRate);
+        String formattedProfitRate = formatProfitRate(profitRate);
+        System.out.printf(OutputPrompt.PROFIT_RATE.getMessage(), formattedProfitRate);
     }
 
     private String formatLottoRankMap(Map<LottoRank, Integer> lottoRankMap) {
@@ -50,5 +53,9 @@ public class OutputView {
 
     private String formatPrize(int prize) {
         return String.format("%,d", prize);
+    }
+
+    private String formatProfitRate(double profitRate) {
+        return new DecimalFormat("#,##0.0").format(new BigDecimal(profitRate));
     }
 }
