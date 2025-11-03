@@ -31,6 +31,8 @@ public class LottoController {
         Map<LottoRank, Integer> lottoRankMap =
                 lottoGameService.generateLottoGame(lottos, winningNumbers, bonusNumber);
         outputView.printLottoResult(lottoRankMap);
+        double profitRate = lottoGameService.calculateProfitRate(purchaseAmount, lottoRankMap);
+        outputView.printProfitRate(profitRate);
     }
 
     private long getPurchaseAmount() {

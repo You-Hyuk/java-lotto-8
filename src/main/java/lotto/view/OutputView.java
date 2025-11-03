@@ -25,6 +25,10 @@ public class OutputView {
         System.out.println(formatLottoRankMap(lottoRankMap));
     }
 
+    public void printProfitRate(double profitRate) {
+        System.out.printf(OutputPrompt.PROFIT_RATE.getMessage(), profitRate);
+    }
+
     private String formatLottoRankMap(Map<LottoRank, Integer> lottoRankMap) {
         return Arrays.stream(LottoRank.values())
                 .filter(rank -> rank != LottoRank.NONE)
@@ -47,5 +51,4 @@ public class OutputView {
     private String formatPrize(int prize) {
         return String.format("%,d", prize);
     }
-
 }
